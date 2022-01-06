@@ -1,7 +1,10 @@
 import { app, BrowserWindow, nativeTheme } from 'electron'
+import { initialize, enable } from '@electron/remote/main'
 import path from 'path'
 import os from 'os'
 import fs from 'fs'
+
+initialize()
 
 // needed in case process is undefined under Linux
 const platform = process.platform || os.platform()
@@ -24,6 +27,7 @@ function createWindow () {
     width: 1000,
     height: 600,
     useContentSize: true,
+    // frame: false,
     webPreferences: {
       contextIsolation: true,
       // More info: /quasar-cli/developing-electron-apps/electron-preload-script
@@ -31,6 +35,7 @@ function createWindow () {
     }
   })
 
+  enable(mainWindow.webContents)
   void mainWindow.loadURL(process.env.APP_URL)
 
   if (process.env.DEBUGGING) {
